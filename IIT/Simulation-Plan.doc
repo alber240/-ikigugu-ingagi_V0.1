@@ -1,0 +1,45 @@
+#Introduction
+The Smart School Lab project aims to centralize control of lab devices via an IoT dashboard, enabling power management and usage oversight. Since not all hardware (e.g., PCs, projectors, fans) is available during Week 1, we will simulate device behaviors to test the dashboard, APIs, and key features like device on/off controls, time-based schedules, and student activity logs. This document outlines the tools and methods for simulating IoT behavior, ensuring the Software Engineering (SWE) team can develop and test the system effectively.
+
+#Simulation Tools
+We will use a combination of hardware and software to simulate lab devices:
+- Arduino Uno: Simulates relay-controlled devices (e.g., fans, lights) using a 5V relay module or LEDs to mimic on/off states.
+- Raspberry Pi: Hosts an MQTT broker and simulates smart plug behaviors for devices like PCs and projectors.
+- Node-RED: A software tool to create virtual device flows, mimicking responses to dashboard commands and logging usage data.
+- Python Scripts: Lightweight software mocks to simulate device states and student actions for testing analytics and notifications.
+
+#Approach
+The simulation strategy aligns with key use cases (e.g., “Teacher logs in and shuts down all PCs”) and supports dashboard integration via MQTT over LAN, as planned by the Network Engineering (NWE) team.
+
+1.Relay-Controlled Devices (Fans, LED Lights)**:
+   - Tool: Arduino Uno with a 5V relay module or LED.
+   - Method: The Arduino listens for MQTT messages (e.g., “fan_on” or “fan_off”) from the dashboard. A relay module toggles an LED or small motor to represent the device state.
+   - Setup: Connect the Arduino to the lab’s LAN via an Ethernet shield or serial-to-USB to a Raspberry Pi. Publish state changes (e.g., “fan_on”) to the MQTT broker for logging.
+   - Purpose: Simulates time-based power schedules and teacher-initiated controls.
+
+2.Smart Plug Devices (PCs, Projectors)**:
+   - Tool: Raspberry Pi 4 running an MQTT broker (Mosquitto) and Python scripts.
+   - Method: Python scripts simulate smart plug responses by subscribing to MQTT topics (e.g., “pc1/control”). Commands like “on” or “off” update a virtual device state and log usage data (e.g., timestamp, duration).
+   - Setup: The Raspberry Pi hosts the MQTT broker and runs scripts to mimic 20 PCs and 2 projectors. Scripts send periodic “status” messages to simulate power usage for analytics.
+   - Purpose: Tests dashboard on/off controls and energy-saving automation.
+
+3.Software Mocks (Virtual Devices, Student Actions)**:
+   - Tool: Node-RED running on the Raspberry Pi or a local server.
+   - Method: Node-RED flows simulate virtual devices (e.g., a 3D printer) and student actions (e.g., exceeding usage limits). Flows respond to dashboard commands and trigger notifications for device abuse.
+   - Setup: Create flows for each device type, connected to the MQTT broker. Log actions to a JSON file or in-memory database to simulate student activity logs.
+   - Purpose: Validates role-based access (teacher vs. student) and abuse detection.
+
+#Example Scenarios
+These scenarios align with SWE’s use cases and test core features:
+  - Use Case: Teacher shuts down all PCs**:
+  - The dashboard sends an MQTT message (“pcs/all/off”) to the Raspberry Pi.
+  - Python scripts update virtual PC states to “off” and log the action (e.g., “2025-05-13 14:00: All PCs off by teacher”).
+  - Node-RED confirms the command and updates the dashboard’s analytics.
+  
+  - Use Case: Student exceeds device usage limit**:
+  - A Node-RED flow simulates a student keeping a PC “on” past a scheduled shutdown (e.g., 30 minutes).
+  - The flow triggers an MQTT notification (“abuse_detected/pc1”) to the dashboard, logged for teacher review.
+  
+  - Use Case: Time-based power schedule for lights**:
+  - An Arduino listens for an MQTT schedule (e.g., “lights_off_17:00”).
+  - The relay module toggles an LED off at 5:00 PM, simulating lights shutting down.
