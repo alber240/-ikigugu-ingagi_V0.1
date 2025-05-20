@@ -1,0 +1,45 @@
+<!-- frontend/device_control.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Device Control</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Device Control Panel</h2>
+    <div class="device-info">
+      <p><strong>Device:</strong> <span id="deviceName">Smart Computer</span></p>
+      <p><strong>Status:</strong> <span id="deviceStatus">OFF</span></p>
+      <button id="togglePowerBtn">Turn On</button>
+    </div>
+
+    <div class="schedule">
+      <h3>Schedule Settings</h3>
+      <label>Start Time: <input type="time" id="startTime" /></label>
+      <label>End Time: <input type="time" id="endTime" /></label>
+      <button id="setScheduleBtn">Set Schedule</button>
+    </div>
+
+    <div class="usage-history">
+      <h3>Usage History</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Action</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody id="usageLogTable">
+          <!-- Sample log rows inserted via JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -2,17 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Smart Device Control</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart School Lab - Login</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>💡 Smart Device Control</h1>
-  <p>Status: <span id="status">Loading...</span></p>
-  <img id="bulb" src="https://img.icons8.com/ios/100/light-off.png" alt="Light Bulb" />
-  <br /><br />
-  <button onclick="toggleDevice('on')">Turn ON</button>
-  <button onclick="toggleDevice('off')">Turn OFF</button>
-
+  <div class="login-container">
+    <h1>Smart School Lab</h1>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Username" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <select id="role" required>
+        <option value="" disabled selected>Select Role</option>
+        <option value="teacher">Teacher</option>
+        <option value="student">Student</option>
+      </select>
+      <button type="submit">Login</button>
+      <a href="#" class="forgot-password">Forgot Password?</a>
+    </form>
+  </div>
   <script src="script.js"></script>
 </body>
 </html>

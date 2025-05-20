@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Teacher Dashboard - Smart School Lab</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="dashboard-header">
+    <h2>Welcome to Smart School Lab</h2>
+    <p id="welcome-msg">Welcome, Mr. Johnson</p>
+  </header>
+
+  <main class="dashboard-main">
+    <section class="device-controls">
+      <h3>Devices</h3>
+      <div class="device" data-id="1">
+        <span>Computer</span>
+        <label class="switch">
+          <input type="checkbox" checked>
+          <span class="slider round"></span>
+        </label>
+      </div>
+      <div class="device" data-id="2">
+        <span>Projector</span>
+        <label class="switch">
+          <input type="checkbox">
+          <span class="slider round"></span>
+        </label>
+      </div>
+      <div class="device" data-id="3">
+        <span>Smart Board</span>
+        <label class="switch">
+          <input type="checkbox">
+          <span class="slider round"></span>
+        </label>
+      </div>
+      <button id="turnAllOff">Turn All Off</button>
+    </section>
+
+    <section class="notifications">
+      <h3>Notifications</h3>
+      <ul>
+        <li>Device "Smart Board" turned on</li>
+        <li>Student requested access to "Projector"</li>
+      </ul>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="#">Dashboard</a>
+    <a href="device_control.html">Control</a>
+    <a href="logs.html">Logs</a>
+    <a href="index.html">Logout</a>
+  </nav>
+
+  <script src="script.js"></script>
+</body>
+</html>

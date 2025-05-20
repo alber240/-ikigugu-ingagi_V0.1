@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Student Dashboard - Smart School Lab</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="top-nav">
+    <span>Smart School Lab - Student Dashboard</span>
+  </nav>
+
+  <main class="dashboard">
+    <h2>Accessible Devices</h2>
+
+    <ul id="accessibleDevices" class="device-list">
+      <!-- Device list -->
+    </ul>
+
+    <button id="requestAccessBtn" class="btn-primary">Request Access</button>
+
+    <section class="info-panel">
+      <h3>System Info</h3>
+      <p>You currently have view-only access to the devices. To control devices, please request access.</p>
+    </section>
+  </main>
+
+  <script>
+    const accessibleDevices = [
+      { id: 'pc1', name: 'PC', status: true },
+      { id: 'projector', name: 'Projector', status: false }
+    ];
+
+    function renderAccessibleDevices() {
+      const list = document.getElementById('accessibleDevices');
+      list.innerHTML = '';
+      accessibleDevices.forEach(device => {
+        const li = document.createElement('li');
+        li.className = 'device-item';
+        li.innerHTML = `
+          <span>${device.name}</span>
+          <span class="status-label ${device.status ? 'on' : 'off'}">
+            ${device.status ? 'ON' : 'OFF'}
+          </span>
+        `;
+        list.appendChild(li);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderAccessibleDevices();
+
+      document.getElementById('requestAccessBtn').addEventListener('click', () => {
+        alert('Access request sent to the administrator.');
+        // TODO: Integrate with backend request API
+      });
+    });
+  </script>
+</body>
+</html>
