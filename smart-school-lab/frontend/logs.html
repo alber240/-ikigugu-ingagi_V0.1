@@ -1,30 +1,73 @@
-<!-- frontend/logs.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Activity Logs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Activity Logs - Smart School Lab</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
+  <header class="dashboard-header">
+    <a href="teacher_dashboard.html">← Back</a>
     <h2>Activity Logs</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>User</th>
-          <th>Device</th>
-          <th>Action</th>
-          <th>Time</th>
-        </tr>
-      </thead>
-      <tbody id="logsTable">
-        <!-- Log rows from JS -->
-      </tbody>
-    </table>
-  </div>
+  </header>
 
-  <script src="script.js"></script>
+  <main class="dashboard-main">
+    <section class="log-filters">
+      <label for="filterDevice">Device:</label>
+      <select id="filterDevice">
+        <option>All</option>
+        <option>Computer</option>
+        <option>Projector</option>
+        <option>Smart Board</option>
+      </select>
+
+      <label for="filterUser">User:</label>
+      <select id="filterUser">
+        <option>All</option>
+        <option>Teacher</option>
+        <option>Student</option>
+      </select>
+
+      <label for="filterDate">Date:</label>
+      <input type="date" id="filterDate" />
+    </section>
+
+    <section class="logs-table">
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Device</th>
+            <th>Action</th>
+            <th>Timestamp</th>
+          </tr>
+        </thead>
+        <tbody id="logsBody">
+          <tr>
+            <td>Teacher</td>
+            <td>Computer</td>
+            <td>ON</td>
+            <td>2025-05-20 08:30</td>
+          </tr>
+          <tr>
+            <td>Student</td>
+            <td>Projector</td>
+            <td>OFF</td>
+            <td>2025-05-20 10:15</td>
+          </tr>
+          <tr>
+            <td>Teacher</td>
+            <td>Smart Board</td>
+            <td>ON</td>
+            <td>2025-05-19 09:45</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="logs.js"></script>
 </body>
 </html>
