@@ -1,0 +1,20 @@
+# Smart School Lab - Hardware Plans
+## Overview
+This folder contains IIT deliverables for hardware integration and simulations.
+
+## Hardware Inventory
+- File: `hardware_inventory_may13.xlsx`
+- Lists devices (PCs, fans, lights) with control methods (smart plugs, relays).
+
+## Simulation Approach
+- File: `simulation_approach_may13.md`
+- Uses Arduino (relays), Raspberry Pi (smart plugs), Node-RED (mocks).
+
+## Simulation Setup
+- **Arduino**: Connect 5V relay module to pin 7. Use MQTT topic `smartlab/fan1`.
+- **Raspberry Pi**: Run Mosquitto broker and Python scripts for PC simulation.
+- **Node-RED**: Deploy flows for virtual device responses.
+
+## Limitations
+- Simulations lack real power consumption data.
+- Full hardware integration planned for Week 3.
