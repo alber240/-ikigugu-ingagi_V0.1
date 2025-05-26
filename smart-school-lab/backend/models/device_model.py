@@ -4,13 +4,13 @@ from .log_model import logs
 
 
 devices = [
-    {"id": 1, "name": "Projector", "status": "off"},
-    {"id": 2, "name": "Smart Light", "status": "off"},
-    {"id": 3, "name": "Fan", "status": "on"}
+    {"id": 1, "name": "Projector", "status": "off", "total_usage_hours": 0},
+    {"id": 2, "name": "Smart Light", "status": "off", "total_usage_hours": 3.5},
+    {"id": 3, "name": "Fan", "status": "on", "total_usage_hours": 1.2},
 ]
 
 def find_device_by_id(device_id):
-    return next((d for d in devices if d["id"] == device_id), None)
+    return next((device for device in devices if device["id"] == device_id), None)
 
 def toggle_device_status(device_id, action):
     device = find_device_by_id(device_id)

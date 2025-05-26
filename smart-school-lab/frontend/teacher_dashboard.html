@@ -7,47 +7,80 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+  <!-- ✅ Header Section -->
   <header class="dashboard-header">
     <h2>Welcome to Smart School Lab</h2>
-    <p id="welcome-msg">Welcome, Mr. Johnson</p>
+    <p id="welcome-msg">Mr Albert A Allen</p>
   </header>
 
+  <!-- ✅ Main Content Area -->
   <main class="dashboard-main">
+
+    <!-- ✅ Device Controls Section -->
     <section class="device-controls">
       <h3>Devices</h3>
-      <div class="device" data-id="1">
-        <span>Computer</span>
-        <label class="switch">
-          <input type="checkbox" checked>
-          <span class="slider round"></span>
-        </label>
-      </div>
-      <div class="device" data-id="2">
-        <span>Projector</span>
-        <label class="switch">
-          <input type="checkbox">
-          <span class="slider round"></span>
-        </label>
-      </div>
-      <div class="device" data-id="3">
-        <span>Smart Board</span>
-        <label class="switch">
-          <input type="checkbox">
-          <span class="slider round"></span>
-        </label>
-      </div>
+
+      <!-- ✅ Single instance of #deviceList to avoid conflicts -->
+      <div id="deviceList"></div> 
+
       <button id="turnAllOff">Turn All Off</button>
     </section>
 
+    <!-- ✅ Analytics Section -->
+    <section id="analyticsSection">
+      <h3>Device Analytics</h3>
+      <p>Loading analytics...</p>
+    </section>
+
+    <!-- ✅ Notifications Section -->
     <section class="notifications">
       <h3>Notifications</h3>
-      <ul>
-        <li>Device "Smart Board" turned on</li>
-        <li>Student requested access to "Projector"</li>
+      <ul id="notificationList">
+        <!-- ✅ Dynamic notifications will be populated here -->
       </ul>
     </section>
+
+    <!-- ✅ Activity Logs Section -->
+    <section id="activityLogs">
+      <h3>Activity Logs</h3>
+
+      <!-- ✅ Filters for logs -->
+      <label for="filterDevice">Device:</label>
+      <select id="filterDevice">
+        <option value="all">All</option>
+        <option value="Computer">Computer</option>
+        <option value="Projector">Projector</option>
+        <option value="Smart Board">Smart Board</option>
+      </select>
+
+      <label for="filterUser">User:</label>
+      <select id="filterUser">
+        <option value="all">All</option>
+        <option value="Teacher">Teacher</option>
+        <option value="Student">Student</option>
+      </select>
+
+      <label for="filterDate">Date:</label>
+      <input type="date" id="filterDate">
+
+      <!-- ✅ Logs Table -->
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Device</th>
+            <th>Action</th>
+            <th>Timestamp</th>
+          </tr>
+        </thead>
+        <tbody id="logTableBody"> <!-- ✅ This will be dynamically populated --> </tbody>
+      </table>
+    </section>
+
   </main>
 
+  <!-- ✅ Bottom Navigation Menu -->
   <nav class="bottom-nav">
     <a href="#">Dashboard</a>
     <a href="device_control.html">Control</a>
@@ -55,6 +88,8 @@
     <a href="index.html">Logout</a>
   </nav>
 
-  <script src="teacher_dashboard.js"></script>
+  <!-- ✅ JavaScript File for Dashboard Logic -->
+  <script defer src="teacher_dashboard.js"></script>
+
 </body>
 </html>

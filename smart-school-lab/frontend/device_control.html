@@ -1,11 +1,9 @@
-<!-- frontend/device_control.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Device Control</title>
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -14,33 +12,33 @@
     <div class="device-info">
       <p><strong>Device:</strong> <span id="deviceName">Smart Computer</span></p>
       <p><strong>Status:</strong> <span id="deviceStatus">OFF</span></p>
-      <button id="togglePowerBtn">Turn On</button>
+      <button onclick="toggleDevice(1)">Turn On</button> <!-- ✅ Correctly calls JavaScript -->
     </div>
 
     <div class="schedule">
       <h3>Schedule Settings</h3>
       <label>Start Time: <input type="time" id="startTime" /></label>
       <label>End Time: <input type="time" id="endTime" /></label>
-      <button id="setScheduleBtn">Set Schedule</button>
-    </div>
-
-    <div class="usage-history">
-      <h3>Usage History</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>User</th>
-            <th>Action</th>
-            <th>Time</th>
-          </tr>
-        </thead>
-        <tbody id="usageLogTable">
-          <!-- Sample log rows inserted via JS -->
-        </tbody>
-      </table>
+      <button onclick="saveSchedule(1)">Set Schedule</button> <!-- ✅ Correctly calls JavaScript -->
     </div>
   </div>
 
-  <script src="device_control.js"></script>
+  <div class="usage-history">
+  <h3>Usage History</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Action</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+    <tbody id="usageLogTable"> <!-- ✅ Ensure this exists -->
+    </tbody>
+  </table>
+</div>
+
+
+  <script src="device_control.js"></script> <!-- ✅ Ensure script loads last -->
 </body>
 </html>

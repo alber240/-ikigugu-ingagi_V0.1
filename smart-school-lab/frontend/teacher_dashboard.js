@@ -1,79 +1,188 @@
-// Define API Base URL
+// ✅ Define API Base URL
 const API_BASE_URL = "http://localhost:5000";
 
 /**
- * Load all devices from the backend and render them dynamically
+ * 🔹 Ensure `#deviceList` exists before running functions
  */
-async function loadTeacherDevices() {
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("🔍 Checking if #deviceList exists...");
+
+  let container = document.getElementById("deviceList");
+
+  if (!container) {
+    console.error("❌ '#deviceList' not found! Creating dynamically.");
+    container = document.createElement("div");
+    container.id = "deviceList";
+
+    const deviceSection = document.querySelector(".device-controls");
+    if (deviceSection) {
+      deviceSection.appendChild(container);
+      console.warn("✅ '#deviceList' created inside .device-controls.");
+    } else {
+      document.body.appendChild(container);
+      console.warn("⚠️ '#deviceList' created in <body>, check HTML structure.");
+    }
+  }
+
+  console.log("✅ #deviceList verified!");
+  loadActivityLogs();
+  loadDeviceAnalytics();
+  loadTeacherDevices();
+});
+
+/**
+ * 🔹 Fetch and display activity logs dynamically
+ */
+async function loadActivityLogs() {
   try {
-    // Fetch all devices from the API
-    const res = await fetch(`${API_BASE_URL}/devices`);
-    const devices = await res.json();
+    const res = await fetch(`${API_BASE_URL}/logs`);
+    if (!res.ok) throw new Error(`Failed to fetch logs: ${res.statusText}`);
 
-    // Select the container where devices will be displayed
-    const container = document.querySelector(".device-controls");
-    container.innerHTML = ""; // Clear previous entries
+    const logs = await res.json();
+    const logTable = document.getElementById("logTableBody");
 
-    // Iterate through the devices and dynamically create HTML elements
-    devices.forEach(device => {
-      const deviceDiv = document.createElement("div");
-      deviceDiv.className = "device";
-      deviceDiv.dataset.id = device.id;
+    if (!logTable) {
+      console.error("Error: Element 'logTableBody' not found! Check HTML structure.");
+      return;
+    }
 
-      deviceDiv.innerHTML = `
-        <span>${device.name}</span>
-        <label class="switch">
-          <input type="checkbox" ${device.status === "on" ? "checked" : ""}>
-          <span class="slider round"></span>
-        </label>
-      `;
+    logTable.innerHTML = ""; // ✅ Clear previous entries
 
-      // Add an event listener for toggling the device status
-      deviceDiv.querySelector("input").addEventListener("change", (event) => {
-        toggleDevice(device.id, event.target.checked);
-      });
-
-      // Append the device element to the container
-      container.appendChild(deviceDiv);
+    logs.forEach(log => {
+      const row = `<tr>
+        <td>${log.username || "Unknown"}</td>
+        <td>${log.device || "Unknown Device"}</td>
+        <td>${log.action?.toUpperCase() || "Unknown Action"}</td>
+        <td>${log.timestamp || "No Time Available"}</td>
+      </tr>`;
+      logTable.innerHTML += row;
     });
 
+    console.log("Activity logs loaded successfully!");
   } catch (error) {
-    console.error("Failed to load devices:", error);
+    console.error("Error loading activity logs:", error);
   }
 }
 
 /**
- * Toggle the status of a device (ON/OFF)
- * @param {number} deviceId - ID of the device
- * @param {boolean} isOn - True if ON, False if OFF
+ * 🔹 Toggle Device ON/OFF
  */
-async function toggleDevice(deviceId, isOn) {
+window.toggleDevice = async function(deviceId) { 
   try {
-    // Send the toggle request to the API
+    console.log(`🔍 Attempting to toggle Device ID: ${deviceId}`);
+
+    const deviceElem = document.querySelector(`.device[data-id="${deviceId}"] input[type="checkbox"]`);
+    
+    if (!deviceElem) {
+      console.error(`❌ Error: Checkbox for Device ID ${deviceId} not found!`);
+      return;
+    }
+
+    console.log(`✅ Checkbox found for Device ID ${deviceId}, current state: ${deviceElem.checked}`);
+
+    const isOn = deviceElem.checked;
+
     const res = await fetch(`${API_BASE_URL}/devices/${deviceId}/toggle`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: isOn ? "on" : "off" })
     });
 
-    // Check if the response is OK, otherwise show an alert
-    if (!res.ok) {
-      alert("Error updating device.");
+    if (!res.ok) throw new Error(`Error toggling Device ${deviceId}`);
+
+    alert(`Device ${deviceId} is now ${isOn ? "ON" : "OFF"}`);
+    loadTeacherDevices(); // ✅ Refresh UI after toggling
+  } catch (error) {
+    console.error(`❌ Error toggling Device ${deviceId}:`, error);
+  }
+};
+
+/**
+ * 🔹 Fetch and display device analytics
+ */
+async function loadDeviceAnalytics() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/devices/analytics`);
+    if (!res.ok) throw new Error(`Error fetching analytics: ${res.statusText}`);
+
+    const data = await res.json();
+    const analyticsContainer = document.getElementById("analyticsSection");
+
+    if (!analyticsContainer) {
+      console.error("Error: Element 'analyticsSection' not found! Check HTML structure.");
+      return;
     }
 
-    // Reload devices after toggle to reflect changes
-    loadTeacherDevices();
+    analyticsContainer.innerHTML = ""; // ✅ Clear previous data
 
+    data.forEach(device => {
+      const analyticsCard = `
+        <div class="device-analytics">
+          <h3>${device.name}</h3>
+          <p>Status: ${device.status}</p>
+          <p>Total Usage: ${device.total_usage_hours ? device.total_usage_hours.toFixed(2) : "N/A"} hrs</p>
+        </div>
+      `;
+      analyticsContainer.innerHTML += analyticsCard;
+    });
+
+    console.log("Device analytics loaded successfully!");
   } catch (error) {
-    console.error("Error toggling device:", error);
+    console.error("Failed to load device analytics:", error);
   }
 }
 
 /**
- * Initialize dashboard functionality when the page loads
+ * 🔹 Fetch and display all devices for teachers dynamically
  */
-document.addEventListener("DOMContentLoaded", () => {
-  if (window.location.pathname.includes("teacher_dashboard.html")) {
-    loadTeacherDevices();
+async function loadTeacherDevices() {
+  try {
+    const container = document.getElementById("deviceList");
+
+    if (!container) {
+      console.error("Error: Element '#deviceList' not found! Creating dynamically.");
+      
+      container = document.createElement("div");
+      container.id = "deviceList";
+
+      const deviceSection = document.querySelector(".device-controls");
+      if (deviceSection) {
+        deviceSection.appendChild(container);
+        console.warn("✅ '#deviceList' created inside .device-controls.");
+      } else {
+        document.body.appendChild(container);
+        console.warn("⚠️ '#deviceList' created in <body>, check HTML structure.");
+      }
+    }
+
+    const res = await fetch(`${API_BASE_URL}/devices`);
+    if (!res.ok) throw new Error(`Error fetching devices: ${res.statusText}`);
+
+    const devices = await res.json();
+    container.innerHTML = ""; // ✅ Clear previous entries
+
+    devices.forEach(device => {
+      const deviceDiv = document.createElement("div");
+      deviceDiv.className = "device";
+      deviceDiv.dataset.id = device.id;
+
+      const span = document.createElement("span");
+      span.textContent = device.name;
+
+      const checkbox = document.createElement("input"); 
+      checkbox.type = "checkbox"; // ✅ Ensure checkboxes exist
+      checkbox.checked = device.status === "on";
+      checkbox.addEventListener("change", () => toggleDevice(device.id)); 
+
+      deviceDiv.appendChild(span);
+      deviceDiv.appendChild(checkbox); 
+      container.appendChild(deviceDiv);
+
+      console.log(`✅ Device added: ${device.name}, ID: ${device.id}`);
+    });
+
+    console.log("Devices loaded successfully!");
+  } catch (error) {
+    console.error("Failed to load devices:", error);
   }
-});
+}

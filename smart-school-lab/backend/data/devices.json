@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "name": "Computer",
+        "status": "on",
+        "total_usage_hours": 2.5
+    },
+    {
+        "id": 2,
+        "name": "Projector",
+        "status": "off",
+        "total_usage_hours": 1.75
+    },
+    {
+        "id": 3,
+        "name": "Smart Board",
+        "status": "on",
+        "total_usage_hours": 4.0
+    }
+]

@@ -1,147 +1,151 @@
-// Define API Base URL
+// ✅ Define API Base URL
 const API_BASE_URL = "http://localhost:5000";
-let deviceId = 2; // Hardcoded for now, can be made dynamic later
 
 /**
- * Fetch and display device details from the backend
+ * 🔹 Fetch & display ALL devices dynamically from the backend
  */
-async function loadDeviceDetail() {
+async function loadTeacherDevices() {
   try {
-    const res = await fetch(`${API_BASE_URL}/devices/${deviceId}`);
-    
-    if (!res.ok) {
-      throw new Error(`Error fetching device: ${res.statusText}`);
-    }
+    const res = await fetch(`${API_BASE_URL}/devices`); // ✅ Fixed trailing slash issue
+    if (!res.ok) throw new Error(`Error fetching devices: ${res.statusText}`);
 
-    const device = await res.json();
+    const devices = await res.json();
+    const container = document.getElementById("deviceList");
 
-    // Update UI with device info
-    document.getElementById("deviceName").textContent = device.name;
-    document.getElementById("deviceStatus").textContent = device.status.toUpperCase();
-    document.getElementById("togglePowerBtn").textContent = device.status === "on" ? "Turn Off" : "Turn On";
-
-  } catch (error) {
-    console.error("Failed to load device details:", error);
-  }
-}
-
-/**
- * Toggle device ON/OFF
- */
-async function toggleDevice() {
-  try {
-    const currentStatus = document.getElementById("deviceStatus").textContent.toLowerCase();
-    const newStatus = currentStatus === "on" ? "off" : "on";
-
-    // ✅ Corrected API endpoint for toggling
-    const res = await fetch(`${API_BASE_URL}/devices/${deviceId}/toggle`, { 
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: newStatus }) // ✅ Correct request format
-    });
-
-    if (!res.ok) {
-      throw new Error(`Error toggling device: ${res.statusText}`);
-    }
-
-    loadDeviceDetail(); // Refresh device details after toggling
-
-  } catch (error) {
-    console.error("Error toggling device:", error);
-  }
-}
-
-/**
- * Save schedule settings
- */
-async function saveSchedule() {
-  try {
-    const onTime = document.getElementById("startTime").value;
-    const offTime = document.getElementById("endTime").value;
-
-    // ✅ Ensure values exist before sending request
-    if (!onTime || !offTime) {
-      alert("Please enter both start and end times before setting a schedule.");
+    if (!container) {
+      console.error("Error: Element '#deviceList' not found! Check HTML structure.");
       return;
     }
 
-    const confirmToday = confirm("Do you want to apply this schedule for today?");
-    if (!confirmToday) return; // ✅ Prevent request if user cancels
+    container.innerHTML = ""; // ✅ Clear previous entries
 
-    const res = await fetch(`${API_BASE_URL}/devices/${deviceId}/schedule`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ on_time: onTime, off_time: offTime }) // ✅ Correct data format
+    devices.forEach(device => {
+      const deviceDiv = document.createElement("div");
+      deviceDiv.className = "device";
+      deviceDiv.dataset.id = device.id;
+
+      deviceDiv.innerHTML = `
+        <span>${device.name}</span>
+        <button onclick="toggleDevice(${device.id})">${device.status === "on" ? "Turn Off" : "Turn On"}</button>
+      `;
+
+      container.appendChild(deviceDiv);
     });
 
-    if (!res.ok) {
-      throw new Error(`Error saving schedule: ${res.statusText}`);
-    }
-
-    alert("Schedule saved successfully!");
-
+    console.log("Devices loaded successfully!");
   } catch (error) {
-    console.error("Failed to save schedule:", error);
+    console.error("Failed to load devices:", error);
   }
 }
 
+/**
+ * 🔹 Toggle ANY device ON/OFF
+ */
+async function toggleDevice(deviceId) {
+  try {
+    // ✅ Ensure the device status element exists before accessing
+    const deviceStatusElem = document.getElementById("deviceStatus");
+    if (!deviceStatusElem) {
+      console.error("Error: Element 'deviceStatus' not found!");
+      return;
+    }
+
+    // ✅ Determine current status dynamically
+    const currentStatus = deviceStatusElem.textContent.toLowerCase();
+    const newStatus = currentStatus === "on" ? "off" : "on"; 
+
+    const username = sessionStorage.getItem("username") || "Unknown";
+
+    const res = await fetch(`${API_BASE_URL}/devices/${deviceId}/toggle`, { 
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: newStatus, username }) // ✅ Send correct new status
+    });
+
+    if (!res.ok) throw new Error(`Error toggling Device ${deviceId}`);
+
+    alert(`Device ${deviceId} is now ${newStatus.toUpperCase()}`);
+
+    loadTeacherDevices(); // ✅ Refresh devices
+    loadUsageHistory();  // ✅ Refresh history
+  } catch (error) {
+    console.error(`Error toggling Device ${deviceId}:`, error);
+  }
+}
 
 /**
- * Load and display device usage history
+ * 🔹 Save schedule settings
+ */
+async function saveSchedule(deviceId) {
+  try {
+    const onTime = document.getElementById("startTime")?.value;
+    const offTime = document.getElementById("endTime")?.value;
+    const username = sessionStorage.getItem("username") || "Unknown"; // ✅ Capture username
+
+    if (!onTime || !offTime) {
+      alert("Error: Please enter both Start and End times.");
+      return;
+    }
+
+    const res = await fetch(`${API_BASE_URL}/devices/${deviceId}/schedule`, { 
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ on_time: onTime, off_time: offTime, username })
+    });
+
+    if (!res.ok) throw new Error(`Error saving schedule for Device ${deviceId}`);
+
+    alert(`Schedule set for ${deviceId} successfully!`);
+    
+    loadUsageHistory(); // ✅ Update history after scheduling
+  } catch (error) {
+    console.error(`Failed to save schedule for Device ${deviceId}:`, error);
+  }
+}
+
+/**
+ * 🔹 Load & display device usage history dynamically
  */
 async function loadUsageHistory() {
   try {
-    // ✅ Corrected API endpoint for fetching logs
-    const res = await fetch(`${API_BASE_URL}/logs`); 
-    
-    if (!res.ok) {
-      throw new Error(`Error fetching logs: ${res.statusText}`);
+    const tbody = document.getElementById("usageLogTable");
+
+    // ✅ Ensure usage log table exists before execution
+    if (!tbody) {
+      console.error("Error: Element 'usageLogTable' not found! Check HTML structure.");
+      return;
     }
 
+    const res = await fetch(`${API_BASE_URL}/logs`);
+    if (!res.ok) throw new Error(`Error fetching logs: ${res.statusText}`);
+
     const logs = await res.json();
+    tbody.innerHTML = ""; // ✅ Clear previous entries
 
-    // Select the table body for usage history
-    const tbody = document.getElementById("usageLogTable");
-    tbody.innerHTML = ""; // Clear previous entries
-
-    // Populate log entries dynamically
     logs.forEach(log => {
+      const username = log.username || "Unknown";
+      const device = log.device || "Unknown Device";
+      const timestamp = log.timestamp || "No Time Available";
+
       const row = `<tr>
-        <td>${log.user}</td>
-        <td>${log.action.toUpperCase()}</td>
-        <td>${log.time}</td>
+        <td>${username}</td>
+        <td>${device}</td>
+        <td>${log.action?.toUpperCase() || "Unknown Action"}</td>
+        <td>${timestamp}</td>
       </tr>`;
       tbody.innerHTML += row;
     });
 
     console.log("Usage history loaded successfully!");
-
   } catch (error) {
     console.error("Failed to load usage history:", error);
   }
 }
 
 /**
- * Initialize script when the page loads
+ * 🔹 Initialize script when the page loads
  */
 document.addEventListener("DOMContentLoaded", () => {
-  // Load device details and usage history on page load
-  loadDeviceDetail();
+  loadTeacherDevices();
   loadUsageHistory();
-
-  // Attach event listeners only if elements exist
-  const toggleBtn = document.getElementById("togglePowerBtn");
-  const scheduleBtn = document.getElementById("setScheduleBtn");
-
-  if (toggleBtn) {
-    toggleBtn.addEventListener("click", toggleDevice);
-  } else {
-    console.error("Element 'togglePowerBtn' not found!");
-  }
-
-  if (scheduleBtn) {
-    scheduleBtn.addEventListener("click", saveSchedule);
-  } else {
-    console.error("Element 'setScheduleBtn' not found!");
-  }
 });

@@ -1,13 +1,18 @@
-/* Login styles*/
+/* ✅ General Body Styles */
 body {
   font-family: Arial, sans-serif;
   background-color: #f2f6fc;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  min-height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
 
+/* ✅ Login Container */
 .login-container {
   background-color: #fff;
   padding: 30px 40px;
@@ -22,6 +27,7 @@ h1 {
   color: #333;
 }
 
+/* ✅ Form Styling */
 form input, form select, form button {
   display: block;
   width: 100%;
@@ -37,6 +43,7 @@ form button {
   color: white;
   border: none;
   cursor: pointer;
+  transition: background 0.3s ease;
 }
 
 form button:hover {
@@ -50,18 +57,20 @@ form button:hover {
   color: #555;
 }
 
-
+/* ✅ Main Container */
 .container {
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 1000px;
+  margin: auto;
   padding: 20px;
   font-family: Arial, sans-serif;
 }
 
+/* ✅ Headings */
 h2, h3 {
   color: #333;
 }
 
+/* ✅ Device Info, Scheduling, and History */
 .device-info, .schedule, .usage-history {
   margin-bottom: 30px;
   padding: 10px;
@@ -69,19 +78,22 @@ h2, h3 {
   border-radius: 8px;
 }
 
+/* ✅ Buttons */
 button {
-  padding: 8px 16px;
+  padding: 10px 18px;
   background-color: #0077cc;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
+  transition: background 0.3s ease;
 }
 
 button:hover {
   background-color: #005fa3;
 }
 
+/* ✅ Table Styling */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -92,6 +104,55 @@ table, th, td {
 }
 
 th, td {
-  padding: 8px;
+  padding: 10px;
   text-align: left;
+}
+
+/* ✅ Dashboard Layout Fix */
+.dashboard-main {
+  max-width: 100%;
+  width: 95vw; /* ✅ Adjust width for better visibility */
+  height: 85vh; /* ✅ Prevent elements from being cut off */
+  overflow-y: auto; /* ✅ Enables scrolling if needed */
+  padding: 20px;
+}
+
+/* ✅ Fix Header Visibility */
+.dashboard-header {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 100;
+  width: 100%;
+  padding: 10px;
+  border-bottom: 2px solid #ccc;
+}
+
+/* ✅ Fix Dashboard Sections */
+.device-controls, .notifications, #activityLogs {
+  overflow-x: auto;
+  display: block;
+  width: 100%;
+}
+
+/* ✅ Responsive Fix for Smaller Screens */
+@media (max-width: 768px) {
+  .dashboard-main {
+    width: 100vw;
+    height: auto;
+    padding: 15px;
+  }
+  
+  .dashboard-header {
+    padding: 5px;
+  }
+
+  button {
+    width: 100%; /* ✅ Full-width buttons for mobile */
+  }
+}
+
+#deviceList {
+  display: block !important; /* ✅ Ensure it's visible */
+  visibility: visible;
 }

@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "username": "Mr. Albert A Allen",
+        "role": "teacher",
+        "permissions": ["control_devices", "view_logs"]
+    },
+    {
+        "id": 2,
+        "username": "Student1",
+        "role": "student",
+        "permissions": ["view_logs", "request_access"]
+    },
+    {
+        "id": 3,
+        "username": "Student2",
+        "role": "student",
+        "permissions": ["view_logs", "request_access"]
+    }
+]
