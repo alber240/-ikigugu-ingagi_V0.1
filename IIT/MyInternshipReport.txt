@@ -1,0 +1,23 @@
+Here are some of the issues I faced while working on this project: 
+1. Technical Issues
+Issue: Lack of Hardware for Simulations
+Since I'm not aware of exactly what devices we're using implementing and testing simulations (e.g., relays for fans, smart plugs for PCs) is difficult, especially for Week 3 tasks like device/API simulations (May 27).
+
+Recommendation: I'd like a detailed report of all the materials we're using.
+
+2. Lack of Schedule
+Issue: No schedules
+Since there's no organisation of who should be specifically working on what, I find myself at a loss on what exactly I should be doing.
+
+Recommendation: Create a schedule of who specifically is working on what so we can all collaborate with each other.
+
+3. Lack of Communication
+Issue: There's no communication
+Since there hasn't been an update on deliverables since week 1 I have no idea who's working on what or if we're still working. Since we're collaborating with other teams communication should be more of a must
+
+Recommendation: I suggest we have weekly meetings even if once a week.
+
+Here are some of the things I have to complete: 
+i)Assemble hardware componenets .
+ii)Test simulations for device control and abuse detection (e.g., student exceeding PC usage).
+iii)Document simulation setup and limitations.
