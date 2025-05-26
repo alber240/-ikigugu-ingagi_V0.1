@@ -1,0 +1,34 @@
+All the codes here are subject to change since they are not the final draft on what hardware and how the project will work. 
+Here's a summary of what the codes do: 
+  
+prototype.py (Python Script)
+Purpose: Simulates smart plug-controlled devices (e.g., PCs, projectors) for the IoT dashboard.
+Functionality:
+Connects to an MQTT broker (broker.hivemq.com) to receive commands (e.g., “on”/“off”) on topics like smartlab/pc1/control.
+Simulates two devices (PC1, Projector1), updating their states and publishing status to smartlab/<device>/status.
+Supports group commands (e.g., “all off” on smartlab/all/control).
+Logs actions (e.g., “PC1 ON at 2025-05-27T13:00”) to device_logs.json for analytics.
+Use Case: Tests teacher controls (e.g., shutting down PCs) and usage logging.
+Remote Use: Runs on your laptop, no hardware needed. Upload to /hardware-plans for the May 27 demo.
+  
+  
+abuseDetection.json (Node-RED Flow)
+Purpose: Simulates student actions and detects device misuse (e.g., a PC staying on past a schedule).
+Functionality:
+Listens for PC1 commands on smartlab/pc1/control via MQTT.
+Simulates overuse by checking if PC1 is “on” after a scheduled time (e.g., 5 PM).
+Triggers a notification on smartlab/pc1/abuse if misuse is detected (e.g., “PC1 on after 17:00”).
+Logs abuse events to abuse_logs.json.
+Use Case: Tests the project’s abuse detection feature for student activity monitoring.
+Remote Use: Runs in Node-RED’s browser-based editor. Upload to /hardware-plans for May 27/28 testing.
+
+  
+prototype.ino (Arduino Code)
+Purpose: Simulates a relay-controlled device (e.g., a fan or light) for the IoT dashboard.
+Functionality:
+Connects to an MQTT broker (broker.hivemq.com) and subscribes to smartlab/fan1/control.
+Toggles a virtual relay (simulated as an LED on pin 7) for “on”/“off” commands.
+Publishes state to smartlab/fan1/status.
+Includes a basic time-based schedule (e.g., auto-off every minute for demo).
+Use Case: Tests teacher controls (e.g., turning off fans) and time-based schedules.
+Remote Use: Simulate in Tinkercad Circuits (Arduino + LED) or document for on-site team testing. Upload to /hardware-plans.
