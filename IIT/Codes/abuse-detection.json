@@ -1,0 +1,59 @@
+[
+  {
+    "id": "node1",
+    "type": "mqtt in",
+    "z": "flow1",
+    "name": "PC1 Control",
+    "topic": "smartlab/pc1/control",
+    "broker": "broker1",
+    "x": 100,
+    "y": 100,
+    "wires": [["node2"]]
+  },
+  {
+    " stamp": "",
+    "id": "node2",
+    "type": "function",
+    "z": "flow1",
+    "name": "Simulate PC1 Usage",
+    "func": "let state = msg.payload;\nif (state === 'on') {\n  // Simulate student keeping PC on\n  setTimeout(() => {\n    let now = new Date();\n    let hours = now.getHours();\n    if (hours >= 17) { // Assume schedule ends at 5 PM\n      msg.payload = 'abuse_detected';\n      msg.device = 'pc1';\n      msg.reason = 'PC1 on after 17:00';\n      return msg;\n    }\n  }, 10000); // Check after 10 seconds\n}\nreturn null;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 300,
+    "y": 100,
+    "wires": [["node3"]]
+  },
+  {
+    "id": "node3",
+    "type": "mqtt out",
+    "z": "flow1",
+    "name": "Abuse Notification",
+    "topic": "smartlab/pc1/abuse",
+    "broker": "broker1",
+    "x": 500,
+    "y": 100,
+    "wires": []
+  },
+  {
+    "id": "node4",
+    "type": "file",
+    "z": "flow1",
+    "name": "Log Abuse",
+    "filename": "abuse_logs.json",
+    "appendNewline": true,
+    "createDir": false,
+    "overwriteFile": "false",
+    "x": 500,
+    "y": 150,
+    "wires": []
+  },
+  {
+    "id": "broker1",
+    "type": "mqtt-broker",
+    "name": "Public Broker",
+    "broker": "broker.hivemq.com",
+    "port": "1883",
+    "clientid": "",
+    "usetls": false
+  }
+]
