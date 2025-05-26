@@ -1,7 +1,7 @@
 Here are some of the issues I faced while working on this project: 
 1. Technical Issues
 Issue: Lack of Hardware for Simulations
-Since I'm not aware of exactly what devices we're using implementing and testing simulations (e.g., relays for fans, smart plugs for PCs) is difficult, especially for Week 3 tasks like device/API simulations (May 27).
+Since I'm not aware of exactly what devices we're using implementing and testing simulations since the ones I provided are based on what I think but I'm not sure what the leader settled on. (e.g., relays for fans, smart plugs for PCs) is difficult, especially for Week 3 tasks like device/API simulations (May 27).
 
 Recommendation: I'd like a detailed report of all the materials we're using.
 
