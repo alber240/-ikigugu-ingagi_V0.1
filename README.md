@@ -64,3 +64,54 @@ These are the backend API routes for controlling devices, managing users, and lo
 
 - [Postman](https://www.postman.com/) for API testing
 - `fetch()` / `axios()` for frontend integration
+
+# 📚 Smart School Lab Project
+
+## 🔹 Overview
+Smart School Lab is an innovative platform designed to enable teachers to **manage and control devices in a classroom environment**, track student activities, and provide analytics for better decision-making.
+
+## 📆 Project Roadmap
+### ✅ Completed Tasks (Week 1)
+- **System Architecture Defined** ✅
+- **Database Schema Designed** ✅
+- **API Routes Structured** ✅
+- **Frontend & Backend Skeleton Set Up** ✅
+- **Initial GitHub Setup & Workflow Defined** ✅
+
+### 🚀 Ongoing Work (Week 2)
+- **Frontend-Backend Integration** 🏗
+- **Authentication System Development** 🏗
+- **Device Control Features (Toggle On/Off)** 🏗
+- **UI Refinements and Testing** 🏗
+
+### 🛠 Upcoming Work (Week 3 - Week 4)
+- **Automated Device Control Features**
+- **Device Status Monitoring and Reporting**
+- **Comprehensive Testing and Bug Fixes**
+- **Deployment and Documentation Finalization**
+
+## 🔹 Tech Stack
+- **Frontend:** HTML, CSS, JavaScript  
+- **Backend:** Flask (Python), REST APIs  
+- **Database:** JSON / SQLite  
+- **Version Control:** GitHub  
+
+## 🔹 Setup Instructions
+### 🛠 How to Run Locally
+1️⃣ Clone the repository:  
+   ```bash
+   git clone https://github.com/alber240/-ikigugu-ingagi_V0.1.git
+   cd smart-school-lab
+
+
+# Flask JWT Authentication System 🚀
+
+## ✅ Progress Summary
+- Implemented **JWT-based authentication** (login, protected routes, token refresh).
+- Added **automatic token refresh** to prevent expiration issues.
+- Integrated **role-based access control** (Admin, Teacher, Student).
+- Developed **secure API endpoints** for managing authentication.
+- Tested functionality using **Postman & JavaScript automation**.
+
+## ✅ How to Use
+1️⃣ **Clone the repository**:

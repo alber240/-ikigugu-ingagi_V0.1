@@ -3,42 +3,55 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Device Control</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Device Control Panel</title>
+  <link rel="stylesheet" href="style.css" /> <!-- ✅ Link to CSS for styling -->
 </head>
 <body>
   <div class="container">
     <h2>Device Control Panel</h2>
+
+    <!-- ✅ Device Information Section -->
     <div class="device-info">
       <p><strong>Device:</strong> <span id="deviceName">Smart Computer</span></p>
       <p><strong>Status:</strong> <span id="deviceStatus">OFF</span></p>
-      <button onclick="toggleDevice(1)">Turn On</button> <!-- ✅ Correctly calls JavaScript -->
+      <button onclick="toggleDevice(1)">Turn On</button> <!-- ✅ Calls JavaScript function -->
     </div>
 
+    <!-- ✅ Device List (Needed for JavaScript) -->
+    <div class="device-list">
+      <h3>Available Devices</h3>
+      <div id="deviceList"> <!-- ✅ This was missing in previous HTML -->
+        <!-- Devices will be dynamically added here via JavaScript -->
+      </div>
+    </div>
+
+    <!-- ✅ Scheduling Section -->
     <div class="schedule">
       <h3>Schedule Settings</h3>
       <label>Start Time: <input type="time" id="startTime" /></label>
       <label>End Time: <input type="time" id="endTime" /></label>
-      <button onclick="saveSchedule(1)">Set Schedule</button> <!-- ✅ Correctly calls JavaScript -->
+      <button onclick="saveSchedule(1)">Set Schedule</button> <!-- ✅ Calls JavaScript function -->
     </div>
   </div>
 
+  <!-- ✅ Usage History Section -->
   <div class="usage-history">
-  <h3>Usage History</h3>
-  <table>
-    <thead>
-      <tr>
-        <th>User</th>
-        <th>Action</th>
-        <th>Time</th>
-      </tr>
-    </thead>
-    <tbody id="usageLogTable"> <!-- ✅ Ensure this exists -->
-    </tbody>
-  </table>
-</div>
+    <h3>Usage History</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Action</th>
+          <th>Time</th>
+        </tr>
+      </thead>
+      <tbody id="usageLogTable"> <!-- ✅ Make sure this exists -->
+      </tbody>
+    </table>
+  </div>
+<button onclick="deleteLogs()">🗑️ Clear Old Logs</button> <!-- ✅ Calls JavaScript function -->
 
-
-  <script src="device_control.js"></script> <!-- ✅ Ensure script loads last -->
+  <!-- ✅ Ensure JavaScript loads after HTML -->
+  <script src="device_control.js" defer></script>
 </body>
 </html>

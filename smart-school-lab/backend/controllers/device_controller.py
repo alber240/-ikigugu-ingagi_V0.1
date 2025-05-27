@@ -4,46 +4,51 @@ from models.device_model import devices, find_device_by_id
 from datetime import datetime
 import json
 import os
+from datetime import datetime, timedelta  # ✅ Add timedelta here
 
-# ✅ Device usage tracking dictionary
-device_usage_timestamps = {}
 
-# ✅ Create a Blueprint for device-related routes
-device_bp = Blueprint('devices', __name__)
+# ---------------------------------------------
+# 🔹 Global Variables & Setup
+# ---------------------------------------------
+device_bp = Blueprint('devices', __name__)  # ✅ Blueprint for device-related routes
+CORS(device_bp)  # ✅ Enable CORS globally for API access
+device_usage_timestamps = {}  # ✅ Dictionary to track device usage duration
 
-# ✅ Enable CORS globally for this blueprint
-CORS(device_bp)
-
-@device_bp.after_request
-def add_cors_headers(response):
-    """ ✅ Adds CORS headers to ensure API accessibility from frontend """
-    response.headers["Access-Control-Allow-Origin"] = "*"
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS, DELETE"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-    return response
-
-# ✅ Define absolute path for logs.json
+# ✅ Log file path for tracking device actions
 LOG_FILE = os.path.join(os.path.dirname(__file__), "../data/logs.json")
 
+# ---------------------------------------------
+# 🔹 Utility Functions for Logging
+# ---------------------------------------------
 def load_logs():
     """ ✅ Loads logs.json safely, creates file if missing """
     try:
         with open(LOG_FILE, "r") as file:
             logs = json.load(file)
     except (FileNotFoundError, json.JSONDecodeError):
-        logs = []  # ✅ Initializes an empty log list if file doesn't exist or is corrupt
+        logs = []  # ✅ Initializes empty list if file is missing or corrupted
         with open(LOG_FILE, "w") as file:
             json.dump(logs, file, indent=4)
-    
     return logs
 
 def save_log(entry):
-    """ ✅ Saves a log entry to logs.json """
+    """ ✅ Saves an action log entry to logs.json """
     logs = load_logs()
     logs.append(entry)
-
     with open(LOG_FILE, "w") as file:
         json.dump(logs, file, indent=4)
+
+# ---------------------------------------------
+# 🔹 API Routes for Device Control
+# ---------------------------------------------
+
+@device_bp.after_request
+def add_cors_headers(response):
+    """ ✅ Adds CORS headers for API accessibility from the frontend """
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS, DELETE"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    return response
 
 # ---------------------------------------------
 # 🔹 Fetch All Devices (GET /devices)
@@ -54,72 +59,68 @@ def get_all_devices():
     return jsonify(devices), 200
 
 # ---------------------------------------------
-# 🔹 Fetch Single Device by ID (GET /devices/<device_id>)
+# 🔹 Fetch Device Status (GET /devices/status)
 # ---------------------------------------------
-@device_bp.route('/<int:device_id>', methods=['GET'])
-def get_device(device_id):
-    """ ✅ Returns details of a specific device by ID """
-    device = find_device_by_id(device_id)
-    if device:
-        return jsonify(device), 200
-    return jsonify({"error": "Device not found"}), 404
+@device_bp.route('/status', methods=['GET'])
+def get_device_status():
+    """ ✅ Returns current real-time status of all devices """
+    return jsonify(devices), 200
 
 # ---------------------------------------------
 # 🔹 Toggle Device Status (ON/OFF) (POST /devices/<device_id>/toggle)
 # ---------------------------------------------
 @device_bp.route('/<int:device_id>/toggle', methods=['POST'])
 def toggle_device(device_id):
-    """ ✅ Toggles device status and logs the action """
+    """ ✅ Toggles device ON/OFF and logs action with correct username """
     data = request.json
-    action = data.get('action')
     username = data.get("username", "Unknown")
+
+    # ✅ Ensure username is valid before saving log
+    if username.strip() == "" or username.lower() == "unknown":
+        username = "System User"  # 🔹 Replace "Unknown" with a default system user
 
     device = find_device_by_id(device_id)
     if not device:
-        print(f"Error: Device ID {device_id} not found!")  # ✅ Debugging message
         return jsonify({"error": "Device not found"}), 404
 
-    # ✅ Update device status
-    device["status"] = action
+    device["status"] = "on" if device["status"] == "off" else "off"
 
-    # ✅ Track device usage
-    if action == "on":
-        device_usage_timestamps[device_id] = datetime.now()
-    elif action == "off" and device_id in device_usage_timestamps:
-        on_time = device_usage_timestamps.pop(device_id)
-        duration = (datetime.now() - on_time).seconds / 3600  
-        device["total_usage_hours"] = device.get("total_usage_hours", 0) + duration  
-
-    # ✅ Log device action
     log_entry = {
-        "action": action,
+        "action": device["status"],
         "device": device["name"],
-        "username": username,
+        "username": username,  # ✅ Now ensures proper username
         "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
     save_log(log_entry)
 
-    return jsonify({"message": f"Device {action} successfully!", "device": device}), 200
+    return jsonify({"message": f"{device['name']} turned {device['status'].upper()}!", "device": device}), 200
 
 
+# ---------------------------------------------
+# 🔹 Fetch Device Analytics (GET /devices/analytics)
+# ---------------------------------------------
 @device_bp.route('/analytics', methods=['GET'])
 def get_device_analytics():
     """ ✅ Returns device analytics including usage hours """
-    analytics_data = [{"name": device["name"], "status": device["status"], "total_usage_hours": device.get("total_usage_hours", 0)} for device in devices]
+    analytics_data = [
+        {"name": device["name"], "status": device["status"], "total_usage_hours": device.get("total_usage_hours", 0)}
+        for device in devices
+    ]
     return jsonify(analytics_data), 200
 
+
 # ---------------------------------------------
-# 🔹 Save Schedule Settings (POST /devices/<device_id>/schedule)
+# 🔹 Save Device Schedule (POST /devices/<device_id>/schedule)
 # ---------------------------------------------
 @device_bp.route('/<int:device_id>/schedule', methods=['POST', 'OPTIONS'])
 def save_schedule(device_id):
     """ ✅ Saves scheduling settings and logs the update """
-    if request.method == "OPTIONS":
+    if request.method == "OPTIONS":  # ✅ Handle CORS preflight request
         response = jsonify({"message": "CORS preflight handled"})
         response.headers.add("Access-Control-Allow-Origin", "*")
         response.headers.add("Access-Control-Allow-Methods", "POST, OPTIONS")
         response.headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization")
-        return response, 200  # ✅ Handle CORS preflight request
+        return response, 200
 
     try:
         data = request.json
@@ -132,7 +133,6 @@ def save_schedule(device_id):
 
         device = find_device_by_id(device_id)
         if not device:
-            print(f"Error: Device ID {device_id} not found!")  # ✅ Debugging message
             return jsonify({"error": "Device not found"}), 404
 
         # ✅ Log scheduling action
@@ -141,17 +141,13 @@ def save_schedule(device_id):
             "device": device["name"],
             "username": username,
             "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "schedule": {
-                "start_time": on_time,
-                "end_time": off_time
-            }
+            "schedule": {"start_time": on_time, "end_time": off_time}
         }
         save_log(log_entry)
 
         return jsonify({"message": f"Schedule set from {on_time} to {off_time} for {device['name']}"}), 200
 
     except Exception as e:
-        print(f"Error in save_schedule: {str(e)}")  # ✅ Debugging message
         return jsonify({"error": f"Internal Server Error: {str(e)}"}), 500
 
 # ---------------------------------------------
@@ -165,7 +161,6 @@ def request_device_access(device_id):
 
     device = find_device_by_id(device_id)
     if not device:
-        print(f"Error: Device ID {device_id} not found!")  # ✅ Debugging message
         return jsonify({"error": "Device not found"}), 404
 
     # ✅ Log request action
@@ -178,3 +173,52 @@ def request_device_access(device_id):
     save_log(log_entry)
 
     return jsonify({"message": f"Access requested for {device['name']} by {username}"}), 200
+
+@device_bp.route('/delete-logs', methods=['POST'])
+def delete_old_logs():
+    """ ✅ Debugging log deletion to identify issues """
+    try:
+        logs = load_logs()
+        print(f"🔹 Debug: Loaded {len(logs)} logs from logs.json")  # ✅ Print total logs loaded
+
+        cutoff_date = datetime.now() - timedelta(days=1)  # 🔹 Change from 90 days to 1 for testing
+
+        filtered_logs = []  # ✅ Initialize empty list for cleaned logs
+
+        for log in logs:
+            try:
+                log_timestamp = datetime.strptime(log.get("timestamp", "1900-01-01"), "%Y-%m-%d %H:%M:%S")
+                if log_timestamp > cutoff_date:
+                    filtered_logs.append(log)  # ✅ Keep valid logs
+            except ValueError as e:
+                print(f"❌ Error parsing timestamp: {log.get('timestamp')} → {e}")  # ✅ Identify bad timestamps
+
+        print(f"✅ Debug: {len(filtered_logs)} logs remain after filtering")  # ✅ Print logs remaining
+
+        save_logs(filtered_logs)  # ✅ Overwrite logs.json with cleaned logs
+
+        return jsonify({"message": "✅ Logs older than 1 day deleted successfully!"}), 200
+
+    except Exception as e:
+        print(f"❌ Internal Server Error: {str(e)}")  # ✅ Log unexpected errors
+        return jsonify({"error": f"❌ Failed to delete logs: {str(e)}"}), 500
+
+
+# ---------------------------------------------
+# 🔹 Utility Functions for Logging
+# ---------------------------------------------
+def load_logs():
+    """ ✅ Loads logs.json safely, creates file if missing """
+    try:
+        with open(LOG_FILE, "r") as file:
+            logs = json.load(file)
+    except (FileNotFoundError, json.JSONDecodeError):
+        logs = []  # ✅ Initializes empty list if file is missing or corrupted
+        with open(LOG_FILE, "w") as file:
+            json.dump(logs, file, indent=4)
+    return logs
+
+def save_logs(logs):
+    """ ✅ Saves the full list of logs to logs.json (Overwrites existing logs) """
+    with open(LOG_FILE, "w") as file:
+        json.dump(logs, file, indent=4)

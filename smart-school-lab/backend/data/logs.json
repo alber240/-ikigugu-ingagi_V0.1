@@ -1,199 +1,5 @@
 [
     {
-        "username": "Mr. Albert A. Allen",
-        "device": "Computer",
-        "action": "on",
-        "timestamp": "2025-05-22 10:30:00"
-    },
-    {
-        "username": "Student1",
-        "device": "Projector",
-        "action": "request",
-        "timestamp": "2025-05-22 11:00:00"
-    },
-    {
-        "username": "Mr. Albert A Allen",
-        "device": "Smart Board",
-        "action": "off",
-        "timestamp": "2025-05-22 11:15:00"
-    },
-    {
-        "action": "on",
-        "device": "Device 1",
-        "username": "Mr. Johnson",
-        "timestamp": "2025-05-22 14:01:49"
-    },
-    {
-        "action": "on",
-        "device_id": 2,
-        "username": "Unknown",
-        "time": "2025-05-22 15:22:47"
-    },
-    {
-        "action": "on",
-        "device_id": 2,
-        "username": "Unknown",
-        "time": "2025-05-22 15:23:40"
-    },
-    {
-        "action": "off",
-        "device_id": 2,
-        "username": "Unknown",
-        "time": "2025-05-22 15:26:45"
-    },
-    {
-        "action": "on",
-        "device_id": 2,
-        "username": "Unknown",
-        "time": "2025-05-22 15:26:58"
-    },
-    {
-        "action": "off",
-        "device_id": 2,
-        "username": "Unknown",
-        "time": "2025-05-22 15:27:11"
-    },
-    {
-        "action": "schedule_set",
-        "device": "Device 2",
-        "username": "Unknown",
-        "timestamp": "2025-05-22 15:42:17",
-        "schedule": {
-            "start_time": "15:44",
-            "end_time": "15:48"
-        }
-    },
-    {
-        "action": "on",
-        "device": "Smart Light",
-        "username": "Unknown",
-        "timestamp": "2025-05-22 15:42:40"
-    },
-    {
-        "action": "schedule_set",
-        "device": "Device 2",
-        "username": "Unknown",
-        "timestamp": "2025-05-22 15:44:24",
-        "schedule": {
-            "start_time": "15:46",
-            "end_time": "15:50"
-        }
-    },
-    {
-        "action": "schedule_set",
-        "device": "Device 2",
-        "username": "Unknown",
-        "timestamp": "2025-05-22 15:45:13",
-        "schedule": {
-            "start_time": "15:51",
-            "end_time": "15:57"
-        }
-    },
-    {
-        "action": "request",
-        "device": "Projector",
-        "username": "Unknown",
-        "timestamp": "2025-05-22 16:25:24"
-    },
-    {
-        "action": "request",
-        "device": "Smart Light",
-        "username": "Unknown",
-        "timestamp": "2025-05-22 16:25:33"
-    },
-    {
-        "action": "request",
-        "device": "Fan",
-        "username": "Unknown",
-        "timestamp": "2025-05-22 16:25:40"
-    },
-    {
-        "action": "request",
-        "device": "Projector",
-        "username": "Unknown",
-        "timestamp": "2025-05-22 16:42:44"
-    },
-    {
-        "action": "on",
-        "device": "Smart Light",
-        "username": "Unknown",
-        "timestamp": "2025-05-23 14:53:45"
-    },
-    {
-        "action": "on",
-        "device": "Projector",
-        "username": "Unknown",
-        "timestamp": "2025-05-23 14:53:49"
-    },
-    {
-        "action": "off",
-        "device": "Smart Light",
-        "username": "Unknown",
-        "timestamp": "2025-05-23 14:54:16"
-    },
-    {
-        "action": "on",
-        "device": "Smart Light",
-        "username": "Unknown",
-        "timestamp": "2025-05-23 14:54:21"
-    },
-    {
-        "action": "off",
-        "device": "Smart Light",
-        "username": "Unknown",
-        "timestamp": "2025-05-23 14:54:23"
-    },
-    {
-        "action": "request",
-        "device": "Projector",
-        "username": "Unknown",
-        "timestamp": "2025-05-23 14:55:33"
-    },
-    {
-        "action": "request",
-        "device": "Smart Light",
-        "username": "Unknown",
-        "timestamp": "2025-05-23 14:55:41"
-    },
-    {
-        "action": "on",
-        "device": "Smart Light",
-        "username": "Unknown",
-        "timestamp": "2025-05-23 15:02:11"
-    },
-    {
-        "action": "schedule_set",
-        "device": "Projector",
-        "username": "Unknown",
-        "timestamp": "2025-05-23 15:38:14",
-        "schedule": {
-            "start_time": "15:42",
-            "end_time": "15:44"
-        }
-    },
-    {
-        "action": "schedule_set",
-        "device": "Projector",
-        "username": "Unknown",
-        "timestamp": "2025-05-23 15:48:56",
-        "schedule": {
-            "start_time": "15:52",
-            "end_time": "15:54"
-        }
-    },
-    {
-        "action": "on",
-        "device": "Projector",
-        "username": "Unknown",
-        "timestamp": "2025-05-23 16:02:43"
-    },
-    {
-        "action": "on",
-        "device": "Projector",
-        "username": "Unknown",
-        "timestamp": "2025-05-23 16:02:59"
-    },
-    {
         "action": "on",
         "device": "Projector",
         "username": "Unknown",
@@ -292,5 +98,85 @@
         "device": "Projector",
         "username": "Unknown",
         "timestamp": "2025-05-27 00:03:58"
+    },
+    {
+        "action": "request",
+        "device": "Projector",
+        "username": "Unknown",
+        "timestamp": "2025-05-27 02:00:28"
+    },
+    {
+        "action": "on",
+        "device": "Projector",
+        "username": "Unknown",
+        "timestamp": "2025-05-27 02:50:25"
+    },
+    {
+        "action": "off",
+        "device": "Projector",
+        "username": "Unknown",
+        "timestamp": "2025-05-27 02:50:48"
+    },
+    {
+        "action": "schedule_set",
+        "device": "Projector",
+        "username": "Unknown",
+        "timestamp": "2025-05-27 02:51:19",
+        "schedule": {
+            "start_time": "02:53",
+            "end_time": "02:57"
+        }
+    },
+    {
+        "action": "on",
+        "device": "Projector",
+        "username": "Unknown",
+        "timestamp": "2025-05-27 02:51:39"
+    },
+    {
+        "action": "on",
+        "device": "Smart Light",
+        "username": "Unknown",
+        "timestamp": "2025-05-27 02:51:44"
+    },
+    {
+        "action": "on",
+        "device": "Projector",
+        "username": "System User",
+        "timestamp": "2025-05-27 03:05:42"
+    },
+    {
+        "action": "schedule_set",
+        "device": "Projector",
+        "username": "Unknown",
+        "timestamp": "2025-05-27 03:06:02",
+        "schedule": {
+            "start_time": "03:08",
+            "end_time": "03:11"
+        }
+    },
+    {
+        "action": "off",
+        "device": "Fan",
+        "username": "System User",
+        "timestamp": "2025-05-27 03:06:21"
+    },
+    {
+        "action": "request",
+        "device": "Projector",
+        "username": "student01",
+        "timestamp": "2025-05-27 03:22:32"
+    },
+    {
+        "action": "request",
+        "device": "Smart Light",
+        "username": "student01",
+        "timestamp": "2025-05-27 03:22:42"
+    },
+    {
+        "action": "on",
+        "device": "Projector",
+        "username": "teacher01",
+        "timestamp": "2025-05-27 03:34:34"
     }
 ]
